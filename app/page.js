@@ -83,7 +83,7 @@ export default function Home() {
         </Grid>
       </Box>
 
-      {/* pricing */}
+      {/* pricing section*/}
       <Box sx={{ my: 6, textAlign: "center" }}>
         <Typography variant="h4" gutterBottom>
           Pricing
