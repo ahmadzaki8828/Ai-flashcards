@@ -48,31 +48,92 @@ export default function Home() {
       </Box>
 
       {/* feature section */}
-      <Box sx={{ my: 6 }}>
-        <Typography variant="h4" components="h2">
+      <Box sx={{ my: 6, textAlign: "center" }}>
+        <Typography variant="h4" gutterBottom>
           Features
         </Typography>
-        <Grid contained spacing={4}>
+        <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
-            <Typography variant="h6">East Text Input</Typography>
+            <Typography variant="h5" gutterBottom>
+              East Text Input
+            </Typography>
             <Typography>
               Simply input your text and let our software do the rest. Creating
               flashcards has never been easier
             </Typography>
-            <Grid item xs={12} md={4}>
-              <Typography variant="h6">Smart Flashcards</Typography>
-              <Typography>
-                Our Ai intelligently breaks fown your text into concise
-                flashcards, perfect for studying.
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Typography variant="h5" gutterBottom>
+              Smart Flashcards
+            </Typography>
+            <Typography>
+              Our Ai intelligently breaks fown your text into concise
+              flashcards, perfect for studying.
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Typography variant="h5" gutterBottom>
+              Accessble Anywhere
+            </Typography>
+            <Typography>
+              Access your flashcards from any device at any time. Study on the
+              go with easy.
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+
+      {/* pricing */}
+      <Box sx={{ my: 6, textAlign: "center" }}>
+        <Typography variant="h4" gutterBottom>
+          Pricing
+        </Typography>
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={6}>
+            <Box
+              sx={{
+                p: 3,
+                border: "1px solid",
+                borderColor: "grey.300",
+                borderRadius: 2,
+              }}
+            >
+              <Typography variant="h5" gutterBottom>
+                Basic
               </Typography>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Typography variant="h6">Accessble Anywhere</Typography>
-              <Typography>
-                Access your flashcards from any device at any time. Study on the
-                go with easy.
+              <Typography variant="h6" gutterBottom>
+                $5 / month
               </Typography>
-            </Grid>
+              <Typography>
+                Access to basic flashcard features and limited storage.
+              </Typography>
+              <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+                Chose Basic
+              </Button>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Box
+              sx={{
+                p: 3,
+                border: "1px solid",
+                borderColor: "grey.300",
+                borderRadius: 2,
+              }}
+            >
+              <Typography variant="h5" gutterBottom>
+                Pro
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                $10 / month
+              </Typography>
+              <Typography>
+                Unlimited flashcards and storage, with priority support.
+              </Typography>
+              <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+                Chose Pro
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </Box>
