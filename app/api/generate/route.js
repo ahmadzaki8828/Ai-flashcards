@@ -20,7 +20,7 @@ Return in the following JSON format
 }`;
 
 export async function POST(req) {
-  const openai = OpenAi();
+  const openai = OpenAi(process.env.OPENAI_API_KEY);
   const data = await req.text();
 
   const completion = await openai.chat.completion.create({
