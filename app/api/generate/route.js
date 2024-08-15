@@ -30,10 +30,8 @@ export async function POST(req) {
       { role: "user", content: data },
     ],
     model: "gpt-4o",
-    response_formate_type: { type: "json_object" },
+    response_format: { type: "json_object" },
   });
-
-  console.log(completion.choices[0].message.content);
 
   const flashcards = JSON.parse(completion.choices[0].message.content);
 
