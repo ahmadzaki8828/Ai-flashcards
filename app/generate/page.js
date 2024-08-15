@@ -190,21 +190,28 @@ export default function Generate() {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Save Flashcard</DialogTitle>
         <DialogContent>
-          Please enter a name for your flashcards collection
+          <Typography gutterBottom>
+            Please enter a name for your flashcards collection
+          </Typography>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Collection Name"
+            type="text"
+            value={name}
+            fullWidth
+            onChange={(e) => setName(e.target.value)}
+            variant="outlined"
+          />
         </DialogContent>
-        <TextField
-          autoFocus
-          margin="dense"
-          label="Collection Name"
-          type="'text"
-          fullWidth
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          variant="outlined"
-        ></TextField>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button onClick={saveFlashCards}>Save</Button>
+          <Button
+            onClick={saveFlashCards}
+            disabled={!name.trim()} // Disable save button if name is empty
+          >
+            Save
+          </Button>
         </DialogActions>
       </Dialog>
     </Container>
