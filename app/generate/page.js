@@ -1,6 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
+import { db } from "@/firebase";
 import {
   Box,
   Button,
