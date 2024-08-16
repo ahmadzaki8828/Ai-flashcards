@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import getStripe from "@/utils/get-stripe";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
@@ -13,6 +15,36 @@ import {
 import Head from "next/head";
 
 export default function Home() {
+  const handleSubmit = async () => {
+    try {
+      const checkoutSession = await fetch("/api/checkout_session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          origin: location.origin,
+        },
+      });
+
+      const checkoutSessionJson = await checkoutSession.json();
+
+      if (checkoutSession.status === 500) {
+        console.error(checkoutSessionJson.message);
+        return;
+      }
+
+      const stripe = await getStripe();
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: checkoutSessionJson.id, // Fix typo here
+      });
+
+      if (error) {
+        console.warn(error.message);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
   return (
     <Container maxWidth="lg">
       <Head>
@@ -46,7 +78,12 @@ export default function Home() {
         <Typography variant="h5">
           The easist way to make flashcards from your text
         </Typography>
-        <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2 }}
+          href="/generate"
+        >
           Get Started
         </Button>
       </Box>
@@ -134,7 +171,12 @@ export default function Home() {
               <Typography>
                 Unlimited flashcards and storage, with priority support.
               </Typography>
-              <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2 }}
+                onClick={handleSubmit}
+              >
                 Chose Pro
               </Button>
             </Box>
