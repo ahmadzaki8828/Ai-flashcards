@@ -71,6 +71,9 @@ export default function SignInPage() {
                 Flashcard SaaS
               </Link>
             </Typography>
+            <Button color="inherit" href="/">
+              Go Home
+            </Button>
             <Button color="inherit" href="/sign-in">
               Login
             </Button>

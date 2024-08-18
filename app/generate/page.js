@@ -145,6 +145,10 @@ export default function Generate() {
     router.push("flashcards");
   };
 
+  const handleGoHome = () => {
+    router.push("/");
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -158,6 +162,18 @@ export default function Generate() {
             alignItems: "center",
           }}
         >
+          <Box
+            sx={{
+              mb: 2,
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "100%",
+            }}
+          >
+            <Button variant="contained" color="primary" onClick={handleGoHome}>
+              Go Home
+            </Button>
+          </Box>
           <Typography variant="h4" gutterBottom>
             Generate Flashcards
           </Typography>
