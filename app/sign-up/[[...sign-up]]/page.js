@@ -12,33 +12,64 @@ import {
   CssBaseline,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Link from "next/link";
 
-export default function SignInPage() {
-  const darkTheme = createTheme({
-    palette: {
-      mode: "dark",
-      background: {
-        default: "#121212",
-        paper: "#1d1d1d",
-      },
-      primary: {
-        main: "#90caf9",
-      },
-      text: {
-        primary: "#ffffff",
-        secondary: "#b0bec5",
+// Create a dark theme
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+    background: {
+      default: "#121212",
+      paper: "#1d1d1d",
+    },
+    primary: {
+      main: "#90caf9",
+    },
+    secondary: {
+      main: "#03dac6",
+    },
+    text: {
+      primary: "#ffffff",
+      secondary: "#b0bec5",
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        contained: {
+          borderRadius: 24,
+          boxShadow: "none",
+          "&:hover": {
+            boxShadow: "none",
+          },
+        },
       },
     },
-  });
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+        },
+      },
+    },
+  },
+});
 
+export default function SignInPage() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Container maxWidth="lg" sx={{ pt: 4 }}>
-        <AppBar position="static" sx={{ mb: 4 }}>
+      <Container maxWidth={false} disableGutters sx={{ padding: 0 }}>
+        <AppBar position="static" sx={{ borderRadius: 0 }}>
           <Toolbar>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              Flashcard SaaS
+              <Link
+                href="/"
+                passHref
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                Flashcard SaaS
+              </Link>
             </Typography>
             <Button color="inherit" href="/sign-in">
               Login
@@ -63,6 +94,7 @@ export default function SignInPage() {
                 maxWidth: "600px",
                 margin: "0 auto",
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                mt: 5,
               }}
             >
               <Typography variant="h4" gutterBottom>
