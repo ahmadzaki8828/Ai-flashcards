@@ -17,15 +17,74 @@ import {
   Paper,
   TextField,
   Typography,
+  CssBaseline,
 } from "@mui/material";
 import { collection, doc, getDoc, writeBatch } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+// Create a dark theme
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+    background: {
+      default: "#121212",
+      paper: "#1e1e1e",
+    },
+    primary: {
+      main: "#bb86fc",
+    },
+    secondary: {
+      main: "#03dac6",
+    },
+    text: {
+      primary: "#e0e0e0",
+      secondary: "#b0bec5",
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        contained: {
+          borderRadius: 24,
+          boxShadow: "none",
+          "&:hover": {
+            boxShadow: "none",
+          },
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-root": {
+            borderRadius: 16,
+            "& fieldset": {
+              borderColor: "#333",
+            },
+            "&:hover fieldset": {
+              borderColor: "#bb86fc",
+            },
+          },
+        },
+      },
+    },
+  },
+});
 
 export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [flashcards, setFlashcards] = useState([]);
-  const [flipped, setFliped] = useState([]);
+  const [flipped, setFlipped] = useState([]);
   const [text, setText] = useState("");
   const [name, setName] = useState("");
   const [open, setOpen] = useState(false);
@@ -40,8 +99,8 @@ export default function Generate() {
       .then((data) => setFlashcards(data));
   };
 
-  const handleCardClick = (id) => {
-    setFliped((prev) => ({ ...prev, [id]: !prev[id] }));
+  const handleCardClick = (index) => {
+    setFlipped((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
   const handleOpen = () => {
@@ -87,134 +146,171 @@ export default function Generate() {
   };
 
   return (
-    <Container maxWidth="md">
-      <Box
-        sx={{
-          mt: 4,
-          mb: 6,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="h4" gutterBottom>
-          Generate Flashcards
-        </Typography>
-        <Paper sx={{ p: 4, width: "100%" }}>
-          <TextField
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            label="Enter Text"
-            fullWidth
-            multiline
-            rows={4}
-            variant="outlined"
-            sx={{ mb: 2 }}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            fullWidth
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Container maxWidth="md">
+        <Box
+          sx={{
+            mt: 4,
+            mb: 6,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h4" gutterBottom>
+            Generate Flashcards
+          </Typography>
+          <Paper
+            sx={{
+              p: 4,
+              width: "100%",
+              backgroundColor: darkTheme.palette.background.paper,
+              borderRadius: 16,
+            }}
           >
-            Submit
-          </Button>
-        </Paper>
-      </Box>
+            <TextField
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              label="Enter Text"
+              fullWidth
+              multiline
+              rows={4}
+              variant="outlined"
+              sx={{ mb: 2 }}
+            />
+            <Button variant="contained" onClick={handleSubmit} fullWidth>
+              Submit
+            </Button>
+          </Paper>
+        </Box>
 
-      {flashcards.length > 0 && (
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h5">Flashcards Preview</Typography>
-          <Grid container spacing={3}>
-            {flashcards.map((flashcard, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card>
-                  <CardActionArea onClick={() => handleCardClick(index)}>
-                    <CardContent>
-                      <Box
+        {flashcards.length > 0 && (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h5">Flashcards Preview</Typography>
+            <Grid container spacing={3}>
+              {flashcards.map((flashcard, index) => (
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Card
+                    sx={{
+                      position: "relative",
+                      width: "100%",
+                      height: 200,
+                      perspective: "1000px", // Apply perspective to the parent
+                      borderRadius: 16,
+                      boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    <CardActionArea
+                      onClick={() => handleCardClick(index)}
+                      sx={{ height: "100%" }}
+                    >
+                      <CardContent
                         sx={{
-                          perspective: "1000px",
-                          "& > div": {
-                            transition: "transform 0.6s",
-                            transformStyle: "preserve-3d",
-                            position: "relative",
-                            width: "100%",
-                            height: "200px",
-                            boxShadow: "0 4px 8px 0 rgba(0,0,0, 0.2)",
-                            transform: flipped[index]
-                              ? "rotateY(180deg)"
-                              : "rotateY(0deg)",
-                          },
-                          "& > div > div": {
+                          position: "relative",
+                          width: "100%",
+                          height: "100%",
+                          transformStyle: "preserve-3d",
+                          transition: "transform 0.6s",
+                          transform: flipped[index]
+                            ? "rotateY(180deg)"
+                            : "rotateY(0deg)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Box
+                          sx={{
                             position: "absolute",
                             width: "100%",
                             height: "100%",
                             backfaceVisibility: "hidden",
                             display: "flex",
-                            justifyContent: "center",
                             alignItems: "center",
+                            justifyContent: "center",
                             padding: 2,
                             boxSizing: "border-box",
-                          },
-                          "& > div > div:nth-of-type(2)": {
+                            borderRadius: 16,
+                            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                            backgroundColor: darkTheme.palette.background.paper,
+                            color: darkTheme.palette.text.primary,
+                            fontSize: "1rem",
+                          }}
+                        >
+                          <Typography variant="h6" component="div">
+                            {flashcard.front}
+                          </Typography>
+                        </Box>
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            width: "100%",
+                            height: "100%",
+                            backfaceVisibility: "hidden",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            padding: 2,
+                            boxSizing: "border-box",
+                            borderRadius: 16,
+                            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                            backgroundColor: darkTheme.palette.background.paper,
+                            color: darkTheme.palette.text.primary,
                             transform: "rotateY(180deg)",
-                          },
-                        }}
-                      >
-                        <div>
-                          <div>
-                            <Typography variant="h5" component="div">
-                              {flashcard.front}
-                            </Typography>
-                          </div>
-                          <div>
-                            <Typography variant="h5" component="div">
-                              {flashcard.back}
-                            </Typography>
-                          </div>
-                        </div>
-                      </Box>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-          <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
-            <Button variant="contained" color="secondary" onClick={handleOpen}>
+                            fontSize: "1rem",
+                          }}
+                        >
+                          <Typography variant="h6" component="div">
+                            {flashcard.back}
+                          </Typography>
+                        </Box>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+            <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleOpen}
+              >
+                Save
+              </Button>
+            </Box>
+          </Box>
+        )}
+
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Save Flashcard</DialogTitle>
+          <DialogContent>
+            <Typography gutterBottom>
+              Please enter a name for your flashcards collection
+            </Typography>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Collection Name"
+              type="text"
+              value={name}
+              fullWidth
+              onChange={(e) => setName(e.target.value)}
+              variant="outlined"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Close</Button>
+            <Button
+              onClick={saveFlashCards}
+              disabled={!name.trim()} // Disable save button if name is empty
+            >
               Save
             </Button>
-          </Box>
-        </Box>
-      )}
-
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Save Flashcard</DialogTitle>
-        <DialogContent>
-          <Typography gutterBottom>
-            Please enter a name for your flashcards collection
-          </Typography>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Collection Name"
-            type="text"
-            value={name}
-            fullWidth
-            onChange={(e) => setName(e.target.value)}
-            variant="outlined"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-          <Button
-            onClick={saveFlashCards}
-            disabled={!name.trim()} // Disable save button if name is empty
-          >
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Container>
+          </DialogActions>
+        </Dialog>
+      </Container>
+    </ThemeProvider>
   );
 }

@@ -12,7 +12,42 @@ import {
   Container,
   Grid,
   Typography,
+  CssBaseline,
+  Box,
+  Button,
 } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+// Create a dark theme
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+    background: {
+      default: "#121212",
+      paper: "#1e1e1e",
+    },
+    primary: {
+      main: "#bb86fc",
+    },
+    secondary: {
+      main: "#03dac6",
+    },
+    text: {
+      primary: "#e0e0e0",
+      secondary: "#b0bec5",
+    },
+  },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+        },
+      },
+    },
+  },
+});
 
 export default function Flashcards() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -43,21 +78,35 @@ export default function Flashcards() {
     router.push(`/flashcard?id=${id}`);
   };
 
+  const handleGoHome = () => {
+    router.push("/");
+  };
+
   return (
-    <Container maxWidth="100vw">
-      <Grid container spacing={3} sx={{ mt: 4 }}>
-        {flashcards.map((flashcard, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card>
-              <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
-                <CardContent>
-                  <Typography variant="h6">{flashcard.name}</Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Container maxWidth="md">
+        <Box sx={{ mt: 4, mb: 2, display: "flex", justifyContent: "flex-end" }}>
+          <Button variant="contained" color="primary" onClick={handleGoHome}>
+            Go Home
+          </Button>
+        </Box>
+        <Grid container spacing={3} sx={{ mb: 4 }}>
+          {flashcards.map((flashcard, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card>
+                <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
+                  <CardContent>
+                    <Typography variant="h6" color="text.primary">
+                      {flashcard.name}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </ThemeProvider>
   );
 }
