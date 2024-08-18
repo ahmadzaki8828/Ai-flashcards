@@ -193,6 +193,7 @@ export default function Generate() {
                 <Grid item xs={12} sm={6} md={4} key={index}>
                   <Card
                     sx={{
+                      textAlign: "center",
                       position: "relative",
                       width: "100%",
                       height: 200,
