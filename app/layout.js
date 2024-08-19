@@ -6,7 +6,7 @@ import { dark, neobrutalism } from "@clerk/themes";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Flashcard Saas",
+  title: "MindCraft",
   description: "Create flashcard from your text",
 };
 

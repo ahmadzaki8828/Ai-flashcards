@@ -14,31 +14,36 @@ import {
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Link from "next/link";
 
-// Create a dark theme
+// Create a dark theme based on the provided configuration
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
     background: {
-      default: "#121212",
-      paper: "#1d1d1d",
+      default: "#0D0D1E",
+      paper: "#1A1A2E",
     },
     primary: {
-      main: "#90caf9",
+      main: "#6C63FF",
     },
     secondary: {
-      main: "#03dac6",
+      main: "#FF6584",
     },
     text: {
-      primary: "#ffffff",
-      secondary: "#b0bec5",
+      primary: "#FFFFFF",
+      secondary: "#B0B0B0",
     },
+  },
+  typography: {
+    fontFamily: "'Poppins', sans-serif",
   },
   components: {
     MuiButton: {
       styleOverrides: {
         contained: {
-          borderRadius: 24,
+          borderRadius: 30,
           boxShadow: "none",
+          textTransform: "none",
+          fontWeight: 600,
           "&:hover": {
             boxShadow: "none",
           },
@@ -48,7 +53,8 @@ const darkTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
+          borderRadius: 20,
+          backgroundImage: "linear-gradient(135deg, #1A1A2E 0%, #16213E 100%)",
         },
       },
     },
@@ -60,30 +66,30 @@ export default function SignInPage() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Container maxWidth={false} disableGutters sx={{ padding: 0 }}>
-        <AppBar position="static" sx={{ borderRadius: 0 }}>
+        <AppBar position="static" sx={{ borderRadius: 0, backgroundColor: "transparent", boxShadow: "none" }}>
           <Toolbar>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               <Link
                 href="/"
                 passHref
-                style={{ textDecoration: "none", color: "inherit" }}
+                style={{ textDecoration: "none", color: darkTheme.palette.text.primary }}
               >
-                Flashcard SaaS
+                MindCraft
               </Link>
             </Typography>
-            <Button color="inherit" href="/">
+            <Button color="inherit" href="/" sx={{ color: darkTheme.palette.text.primary }}>
               Go Home
             </Button>
-            <Button color="inherit" href="/sign-in">
+            <Button color="inherit" href="/sign-in" sx={{ color: darkTheme.palette.text.primary }}>
               Login
             </Button>
-            <Button color="inherit" href="/sign-up">
+            <Button color="inherit" href="/sign-up" sx={{ color: darkTheme.palette.text.primary }}>
               Sign Up
             </Button>
           </Toolbar>
         </AppBar>
 
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center" sx={{ mt: 5 }}>
           <Grid item xs={12} md={6}>
             <Box
               display="flex"
@@ -93,14 +99,13 @@ export default function SignInPage() {
               sx={{
                 padding: 3,
                 backgroundColor: darkTheme.palette.background.paper,
-                borderRadius: 2,
+                borderRadius: 16,
                 maxWidth: "600px",
                 margin: "0 auto",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-                mt: 5,
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
               }}
             >
-              <Typography variant="h4" gutterBottom>
+              <Typography variant="h4" gutterBottom color="text.primary">
                 Sign In
               </Typography>
               <SignIn />
