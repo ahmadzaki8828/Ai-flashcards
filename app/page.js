@@ -16,42 +16,46 @@ import {
 } from "@mui/material";
 import Head from "next/head";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import BackgroundImage from '@/public/hero.jpg';
 
-// Create a dark theme
+
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
     background: {
-      default: "#121212",
-      paper: "#1d1d1d",
+      default: "#0D0D1E",
+      paper: "#1A1A2E",
     },
     primary: {
-      main: "#90caf9",
+      main: "#6C63FF",
     },
     secondary: {
-      main: "#03dac6",
+      main: "#FF6584",
     },
     text: {
-      primary: "#ffffff",
-      secondary: "#b0bec5",
+      primary: "#FFFFFF",
+      secondary: "#B0B0B0",
     },
+  },
+  typography: {
+    fontFamily: "'Poppins', sans-serif",
   },
   components: {
     MuiButton: {
       styleOverrides: {
-        contained: {
-          borderRadius: 24,
-          boxShadow: "none",
-          "&:hover": {
-            boxShadow: "none",
-          },
+        root: {
+          borderRadius: 30,
+          textTransform: "none",
+          fontWeight: 600,
+          padding: "10px 20px",
         },
       },
     },
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
+          borderRadius: 20,
+          backgroundImage: "linear-gradient(135deg, #1A1A2E 0%, #16213E 100%)",
         },
       },
     },
@@ -94,21 +98,39 @@ export default function Home() {
       <CssBaseline />
       <Container maxWidth={false} disableGutters sx={{ padding: 0 }}>
         <Head>
-          <title>Flashcard SaaS</title>
-          <meta name="description" content="Create flashcards from your text" />
+          <title>MindCraft - AI-Powered Flashcards</title>
+          <meta name="description" content="Create flashcards from your text using AI" />
+          <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
         </Head>
 
-        {/* Top bar */}
-        <AppBar position="static" sx={{ borderRadius: 0 }}>
+        <AppBar
+          position="static"
+          sx={{
+            background: "transparent",
+            boxShadow: "none",
+            paddingX: 4,
+            paddingY: 2,
+          }}
+        >
           <Toolbar>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              Flashcard SaaS
+            <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: 700 }}>
+              MindCraft
             </Typography>
+
             <SignedOut>
-              <Button color="inherit" href="/sign-in">
+              <Button
+                color="inherit"
+                href="/sign-in"
+                sx={{ mr: 2, "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }}
+              >
                 Login
               </Button>
-              <Button color="inherit" href="/sign-up">
+              <Button
+                variant="contained"
+                color="primary"
+                href="/sign-up"
+                sx={{ "&:hover": { backgroundColor: darkTheme.palette.primary.dark } }}
+              >
                 Sign Up
               </Button>
             </SignedOut>
@@ -118,32 +140,43 @@ export default function Home() {
           </Toolbar>
         </AppBar>
 
-        {/* Hero section */}
         <Box
           sx={{
             textAlign: "center",
-            py: 10,
-            backgroundColor: darkTheme.palette.background.default,
+            py: 15,
+            px: 4,
+            backgroundImage: `url(${BackgroundImage.src})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            position: "relative",
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(13, 13, 30, 0.7)",
+            },
           }}
         >
-          <Typography variant="h2" fontWeight="bold" gutterBottom>
-            Welcome to Flashcard SaaS
-          </Typography>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            The easiest way to make flashcards from your text
-          </Typography>
-          <Box
-            sx={{ mt: 3, display: "flex", justifyContent: "center", gap: 2 }}
-          >
+          <Box sx={{ position: "relative", zIndex: 1 }}>
+            <Typography variant="h2" fontWeight="bold" gutterBottom>
+            Begin Your MindCraft Adventure <br /> in Minutes!
+            </Typography>
+            <Typography variant="h5" color="text.secondary" gutterBottom sx={{ mb: 4 }}>
+            Effortlessly Create Flashcards with AI Magic!
+            </Typography>
             <Button
               variant="contained"
               color="primary"
+              size="large"
               sx={{
-                px: 4,
+                px: 6,
                 py: 2,
-                fontSize: "1rem",
+                fontSize: "1.2rem",
                 fontWeight: "bold",
-                "&:hover": { backgroundColor: darkTheme.palette.primary.main },
+                "&:hover": { backgroundColor: darkTheme.palette.primary.dark },
               }}
               href="/generate"
             >
@@ -168,200 +201,141 @@ export default function Home() {
           </Box>
         </Box>
 
-        {/* Feature section */}
-        <Box sx={{ py: 8 }}>
+        <Box sx={{ py: 12, px: 4 }}>
           <Typography
-            variant="h4"
+            variant="h3"
             fontWeight="bold"
             textAlign="center"
-            mb={5}
+            mb={8}
             color="text.primary"
           >
-            Features
+            How to use MindCraft
           </Typography>
-          <Grid
-            container
-            spacing={6}
-            justifyContent="center"
-            sx={{
-              maxWidth: "1200px",
-              margin: "0 auto", // Center the grid container
-              paddingX: "16px", // Add horizontal padding to avoid hugging edges
-            }}
-          >
-            <Grid item xs={12} sm={6} md={4}>
-              <Paper
-                elevation={3}
-                sx={{
-                  padding: 4,
-                  textAlign: "center",
-                  backgroundColor: darkTheme.palette.background.paper,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  height: "100%",
-                }}
-              >
-                <Typography variant="h5" fontWeight="bold" gutterBottom>
-                  Easy Text Input
-                </Typography>
-                <Typography color="text.secondary">
-                  Simply input your text and let our software do the rest.
-                  Creating flashcards has never been easier.
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Paper
-                elevation={3}
-                sx={{
-                  padding: 4,
-                  textAlign: "center",
-                  backgroundColor: darkTheme.palette.background.paper,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  height: "100%",
-                }}
-              >
-                <Typography variant="h5" fontWeight="bold" gutterBottom>
-                  Smart Flashcards
-                </Typography>
-                <Typography color="text.secondary">
-                  Our AI intelligently breaks down your text into concise
-                  flashcards, perfect for studying.
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Paper
-                elevation={3}
-                sx={{
-                  padding: 4,
-                  textAlign: "center",
-                  backgroundColor: darkTheme.palette.background.paper,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  height: "100%",
-                }}
-              >
-                <Typography variant="h5" fontWeight="bold" gutterBottom>
-                  Accessible Anywhere
-                </Typography>
-                <Typography color="text.secondary">
-                  Access your flashcards from any device at any time. Study on
-                  the go with ease.
-                </Typography>
-              </Paper>
-            </Grid>
-          </Grid>
-        </Box>
-
-        {/* Pricing section */}
-        <Box sx={{ py: 8 }}>
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-            textAlign="center"
-            mb={5}
-            color="text.primary"
-          >
-            Pricing
-          </Typography>
-          <Grid
-            container
-            spacing={6}
-            justifyContent="center"
-            sx={{
-              maxWidth: "1200px",
-              margin: "0 auto", // Center the grid container
-              paddingX: "16px", // Add horizontal padding to avoid hugging edges
-            }}
-          >
-            <Grid item xs={12} sm={6}>
-              <Paper
-                elevation={3}
-                sx={{
-                  padding: 4,
-                  textAlign: "center",
-                  backgroundColor: darkTheme.palette.background.paper,
-                }}
-              >
-                <Typography variant="h5" fontWeight="bold" gutterBottom>
-                  Basic
-                </Typography>
-                <Typography variant="h6" color="primary" gutterBottom>
-                  $5 / month
-                </Typography>
-                <Typography color="text.secondary" mb={2}>
-                  Access to basic flashcard features and limited storage.
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
+          <Grid container spacing={6} justifyContent="center">
+            {[
+              {
+                title: "AI-Powered Generation",
+                description: "Our advanced AI algorithms create tailored flashcards from your input text.",
+                icon: "🤖",
+              },
+              {
+                title: "Smart Organization",
+                description: "Automatically organize your flashcards into decks and categories for efficient studying.",
+                icon: "📚",
+              },
+              {
+                title: "Cross-Platform Sync",
+                description: "Access your flashcards seamlessly across all your devices.",
+                icon: "🔄",
+              },
+            ].map((feature, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Paper
+                  elevation={0}
                   sx={{
-                    px: 4,
-                    py: 1.5,
-                    fontWeight: "bold",
+                    padding: 4,
+                    textAlign: "center",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    transition: "transform 0.3s",
                     "&:hover": {
-                      backgroundColor: darkTheme.palette.primary.main,
+                      transform: "translateY(-10px)",
                     },
                   }}
                 >
-                  Choose Basic
-                </Button>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Paper
-                elevation={3}
-                sx={{
-                  padding: 4,
-                  textAlign: "center",
-                  backgroundColor: darkTheme.palette.background.paper,
-                }}
-              >
-                <Typography variant="h5" fontWeight="bold" gutterBottom>
-                  Pro
-                </Typography>
-                <Typography variant="h6" color="primary" gutterBottom>
-                  $10 / month
-                </Typography>
-                <Typography color="text.secondary" mb={2}>
-                  Unlimited flashcards and storage, with priority support.
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    px: 4,
-                    py: 1.5,
-                    fontWeight: "bold",
-                    "&:hover": {
-                      backgroundColor: darkTheme.palette.primary.main,
-                    },
-                  }}
-                >
-                  Choose Pro
-                </Button>
-              </Paper>
-            </Grid>
+                  <Typography variant="h1" sx={{ mb: 2 }}>{feature.icon}</Typography>
+                  <Typography variant="h5" fontWeight="bold" gutterBottom>
+                    {feature.title}
+                  </Typography>
+                  <Typography color="text.secondary">
+                    {feature.description}
+                  </Typography>
+                </Paper>
+              </Grid>
+            ))}
           </Grid>
         </Box>
 
-        {/* Footer */}
+        <Box sx={{ py: 12, px: 4, backgroundColor: "rgba(26, 26, 46, 0.5)" }}>
+          <Typography
+            variant="h3"
+            fontWeight="bold"
+            textAlign="center"
+            mb={8}
+            color="text.primary"
+          >
+            Choose Your Plan
+          </Typography>
+          <Grid container spacing={6} justifyContent="center">
+            {[
+              {
+                title: "Basic",
+                price: "$5",
+                features: ["100 AI-generated flashcards/month", "Basic organization", "Web access"],
+              },
+              {
+                title: "Pro",
+                price: "$10",
+                features: ["Unlimited AI-generated flashcards", "Advanced organization", "Cross-platform sync", "Priority support"],
+              },
+            ].map((plan, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    padding: 4,
+                    textAlign: "center",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    border: `2px solid ${darkTheme.palette.primary.main}`,
+                  }}
+                >
+                  <div>
+                    <Typography variant="h4" fontWeight="bold" gutterBottom>
+                      {plan.title}
+                    </Typography>
+                    <Typography variant="h3" color="primary" gutterBottom>
+                      {plan.price} <Typography component="span" variant="h6">/month</Typography>
+                    </Typography>
+                    <Box sx={{ my: 4 }}>
+                      {plan.features.map((feature, idx) => (
+                        <Typography key={idx} color="text.secondary" sx={{ mb: 1 }}>
+                          {feature}
+                        </Typography>
+                      ))}
+                    </Box>
+                  </div>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    sx={{
+                      mt: 2,
+                      "&:hover": { backgroundColor: darkTheme.palette.primary.dark },
+                    }}
+                    onClick={handleSubmit}
+                  >
+                    Choose {plan.title}
+                  </Button>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
         <Box
           sx={{
             py: 4,
             textAlign: "center",
-            backgroundColor: darkTheme.palette.background.default,
-            color: darkTheme.palette.text.secondary,
+            backgroundColor: darkTheme.palette.background.paper,
           }}
         >
           <Typography variant="body2" color="text.secondary">
-            &copy; {new Date().getFullYear()} Flashcard SaaS. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} MindCraft. All rights reserved.
           </Typography>
         </Box>
       </Container>

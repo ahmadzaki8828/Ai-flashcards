@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import { Box, CircularProgress, Container, Typography } from "@mui/material";
+import { Box, CircularProgress, Container, Typography, Button } from "@mui/material";
 
 const ResultPage = () => {
   const router = useRouter();
@@ -46,13 +46,23 @@ const ResultPage = () => {
     );
   }
 
-  //   if (error) {
-  //     return (
-  //       <Container maxWidth="100vw" sx={{ textAlign: "center", mt: 4 }}>
-  //         <Typography variant="h6">{error}</Typography>
-  //       </Container>
-  //     );
-  //   }
+  if (error) {
+    return (
+        <Container maxWidth="sm" sx={{ textAlign: 'center', mt: 4 }}>
+            <Typography variant="h6" color="error">
+                {error}
+            </Typography>
+            <Box sx={{ mt: 4 }}>
+                <Typography variant="body1" sx={{ mb: 4 }}>
+                    Oops! Something went wrong while processing your request. Please try again later or return to the homepage.
+                </Typography>
+                <Button variant="contained" color="primary" onClick={() => router.push('/')}>
+                    Go to Home Page
+                </Button>
+            </Box>
+        </Container>
+    );
+}
 
   return (
     <Container maxWidth="100vw" sx={{ textAlign: "center", mt: 4 }}>
@@ -75,6 +85,9 @@ const ResultPage = () => {
             <Typography variant="body1">
               Your payment was not successful. Please try again.
             </Typography>
+            <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={() => router.push('/')}>
+              Go to Home Page
+            </Button>
           </Box>
         </>
       )}

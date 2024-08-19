@@ -18,30 +18,44 @@ import {
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-// Create a dark theme
+// Use the same dark theme from your Home component
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
     background: {
-      default: "#121212",
-      paper: "#1e1e1e",
+      default: "#0D0D1E",
+      paper: "#1A1A2E",
     },
     primary: {
-      main: "#bb86fc",
+      main: "#6C63FF",
     },
     secondary: {
-      main: "#03dac6",
+      main: "#FF6584",
     },
     text: {
-      primary: "#e0e0e0",
-      secondary: "#b0bec5",
+      primary: "#FFFFFF",
+      secondary: "#B0B0B0",
     },
   },
+  typography: {
+    fontFamily: "'Poppins', sans-serif",
+  },
   components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 30,
+          textTransform: "none",
+          fontWeight: 600,
+          padding: "10px 20px",
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
+          borderRadius: 20,
+          backgroundImage: "linear-gradient(135deg, #1A1A2E 0%, #16213E 100%)",
           boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
         },
       },

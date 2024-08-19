@@ -18,48 +18,62 @@ import {
   TextField,
   Typography,
   CssBaseline,
+  AppBar,
+  Toolbar,
+  CircularProgress,
 } from "@mui/material";
 import { collection, doc, getDoc, writeBatch } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Head from "next/head";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 
-// Create a dark theme
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
     background: {
-      default: "#121212",
-      paper: "#1e1e1e",
+      default: "#0D0D1E",
+      paper: "#1A1A2E",
     },
     primary: {
-      main: "#bb86fc",
+      main: "#6C63FF",
     },
     secondary: {
-      main: "#03dac6",
+      main: "#FF6584",
     },
     text: {
-      primary: "#e0e0e0",
-      secondary: "#b0bec5",
+      primary: "#FFFFFF",
+      secondary: "#B0B0B0",
     },
+  },
+  typography: {
+    fontFamily: "'Poppins', sans-serif",
   },
   components: {
     MuiButton: {
       styleOverrides: {
-        contained: {
-          borderRadius: 24,
-          boxShadow: "none",
-          "&:hover": {
-            boxShadow: "none",
-          },
+        root: {
+          borderRadius: 30,
+          textTransform: "none",
+          fontWeight: 600,
+          padding: "10px 20px",
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: 20,
+          backgroundImage: "linear-gradient(135deg, #1A1A2E 0%, #16213E 100%)",
         },
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
-          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+          borderRadius: 20,
+          backgroundImage: "linear-gradient(135deg, #1A1A2E 0%, #16213E 100%)",
         },
       },
     },
@@ -72,7 +86,7 @@ const darkTheme = createTheme({
               borderColor: "#333",
             },
             "&:hover fieldset": {
-              borderColor: "#bb86fc",
+              borderColor: "#6C63FF",
             },
           },
         },
@@ -88,15 +102,25 @@ export default function Generate() {
   const [text, setText] = useState("");
   const [name, setName] = useState("");
   const [open, setOpen] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async () => {
-    fetch("api/generate", {
-      method: "POST",
-      body: text,
-    })
-      .then((res) => res.json())
-      .then((data) => setFlashcards(data));
+    setIsGenerating(true);
+    try {
+      const response = await fetch("api/generate", {
+        method: "POST",
+        body: text,
+      });
+      const data = await response.json();
+      setFlashcards(data);
+    } catch (error) {
+      console.error("Error generating flashcards:", error);
+      alert("An error occurred while generating flashcards. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleCardClick = (index) => {
@@ -117,74 +141,94 @@ export default function Generate() {
       return;
     }
 
-    const batch = writeBatch(db);
-    const userDocRef = doc(collection(db, "user"), user.id);
-    const docSnap = await getDoc(userDocRef);
+    setIsSaving(true);
+    try {
+      const batch = writeBatch(db);
+      const userDocRef = doc(collection(db, "user"), user.id);
+      const docSnap = await getDoc(userDocRef);
 
-    if (docSnap.exists()) {
-      const collection = docSnap.data().flashcards || [];
-      if (collection.find((f) => f.name === name)) {
-        alert("Flashcard collection with the same name already exists");
-        return;
+      if (docSnap.exists()) {
+        const collection = docSnap.data().flashcards || [];
+        if (collection.find((f) => f.name === name)) {
+          alert("Flashcard collection with the same name already exists");
+          setIsSaving(false);
+          return;
+        } else {
+          collection.push({ name });
+          batch.set(userDocRef, { flashcards: collection }, { merge: true });
+        }
       } else {
-        collection.push({ name });
-        batch.set(userDocRef, { flashcards: collection }, { merge: true });
+        batch.set(userDocRef, { flashcards: [{ name }] });
       }
-    } else {
-      batch.set(userDocRef, { flashcards: [{ name }] });
+
+      const colRef = collection(userDocRef, name);
+      flashcards.forEach((flashcard) => {
+        const cardDocRef = doc(colRef);
+        batch.set(cardDocRef, flashcard);
+      });
+
+      await batch.commit();
+      handleClose();
+      router.push("flashcards");
+    } catch (error) {
+      console.error("Error saving flashcards:", error);
+      alert("An error occurred while saving flashcards. Please try again.");
+    } finally {
+      setIsSaving(false);
     }
-
-    const colRef = collection(userDocRef, name);
-    flashcards.forEach((flashcard) => {
-      const cardDocRef = doc(colRef);
-      batch.set(cardDocRef, flashcard);
-    });
-
-    await batch.commit();
-    handleClose();
-    router.push("flashcards");
   };
 
   const handleGoHome = () => {
     router.push("/");
   };
 
+  if (!isLoaded || !isSignedIn) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Container maxWidth="md">
-        <Box
-          sx={{
-            mt: 4,
-            mb: 6,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Box
-            sx={{
-              mb: 2,
-              display: "flex",
-              justifyContent: "flex-end",
-              width: "100%",
-            }}
+      <Head>
+        <title>MindCraft - Generate Flashcards</title>
+        <meta name="description" content="Generate flashcards using AI" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+      </Head>
+      <AppBar
+        position="static"
+        sx={{
+          background: "transparent",
+          boxShadow: "none",
+          paddingX: 4,
+          paddingY: 2,
+        }}
+      >
+        <Toolbar>
+          <Typography variant="h5" sx={{ flexGrow: 1, fontWeight: 700 }}>
+            MindCraft
+          </Typography>
+          <Button
+            color="inherit"
+            onClick={handleGoHome}
+            sx={{ mr: 2, "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }}
           >
-            <Button variant="contained" color="primary" onClick={handleGoHome}>
-              Go Home
-            </Button>
-          </Box>
-          <Typography variant="h4" gutterBottom>
+            Home
+          </Button>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </Toolbar>
+      </AppBar>
+      <Container maxWidth="lg">
+        <Box sx={{ mt: 4, mb: 6 }}>
+          <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
             Generate Flashcards
           </Typography>
-          <Paper
-            sx={{
-              p: 4,
-              width: "100%",
-              backgroundColor: darkTheme.palette.background.paper,
-              borderRadius: 16,
-            }}
-          >
+          <Paper sx={{ p: 4, width: "100%", borderRadius: 4 }}>
             <TextField
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -195,15 +239,20 @@ export default function Generate() {
               variant="outlined"
               sx={{ mb: 2 }}
             />
-            <Button variant="contained" onClick={handleSubmit} fullWidth>
-              Submit
+            <Button 
+              variant="contained" 
+              onClick={handleSubmit} 
+              fullWidth
+              disabled={isGenerating}
+            >
+              {isGenerating ? <CircularProgress size={24} /> : "Submit"}
             </Button>
           </Paper>
         </Box>
 
         {flashcards.length > 0 && (
           <Box sx={{ mt: 4 }}>
-            <Typography variant="h5">Flashcards Preview</Typography>
+            <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>Flashcards Preview</Typography>
             <Grid container spacing={3}>
               {flashcards.map((flashcard, index) => (
                 <Grid item xs={12} sm={6} md={4} key={index}>
@@ -213,9 +262,7 @@ export default function Generate() {
                       position: "relative",
                       width: "100%",
                       height: 200,
-                      perspective: "1000px", // Apply perspective to the parent
-                      borderRadius: 16,
-                      boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                      perspective: "1000px",
                     }}
                   >
                     <CardActionArea
@@ -248,11 +295,6 @@ export default function Generate() {
                             justifyContent: "center",
                             padding: 2,
                             boxSizing: "border-box",
-                            borderRadius: 16,
-                            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-                            backgroundColor: darkTheme.palette.background.paper,
-                            color: darkTheme.palette.text.primary,
-                            fontSize: "1rem",
                           }}
                         >
                           <Typography variant="h6" component="div">
@@ -270,12 +312,7 @@ export default function Generate() {
                             justifyContent: "center",
                             padding: 2,
                             boxSizing: "border-box",
-                            borderRadius: 16,
-                            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-                            backgroundColor: darkTheme.palette.background.paper,
-                            color: darkTheme.palette.text.primary,
                             transform: "rotateY(180deg)",
-                            fontSize: "1rem",
                           }}
                         >
                           <Typography variant="h6" component="div">
@@ -291,8 +328,9 @@ export default function Generate() {
             <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
               <Button
                 variant="contained"
-                color="secondary"
+                color="primary"
                 onClick={handleOpen}
+                sx={{ px: 4 }}
               >
                 Save
               </Button>
@@ -318,12 +356,14 @@ export default function Generate() {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Close</Button>
+            <Button onClick={handleClose} disabled={isSaving}>Close</Button>
             <Button
               onClick={saveFlashCards}
-              disabled={!name.trim()} // Disable save button if name is empty
+              disabled={!name.trim() || isSaving}
+              color="primary"
+              variant="contained"
             >
-              Save
+              {isSaving ? <CircularProgress size={24} /> : "Save"}
             </Button>
           </DialogActions>
         </Dialog>
