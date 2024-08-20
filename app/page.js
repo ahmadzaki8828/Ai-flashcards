@@ -297,13 +297,9 @@ export default function Home() {
           <Grid container spacing={6} justifyContent="center">
             {[
               {
-                title: "Basic",
-                price: "$5",
-                features: [
-                  "100 AI-generated flashcards/month",
-                  "Basic organization",
-                  "Web access",
-                ],
+                title: "Free",
+                price: "$0",
+                features: ["Basic flashcard creation", "Limited to 50 flashcards", "AI-based content generation (limited)", "Basic support"],
               },
               {
                 title: "Pro",
@@ -351,20 +347,35 @@ export default function Home() {
                       ))}
                     </Box>
                   </div>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    sx={{
-                      mt: 2,
-                      "&:hover": {
-                        backgroundColor: darkTheme.palette.primary.dark,
-                      },
-                    }}
-                    onClick={handleSubmit}
-                  >
-                    Choose {plan.title}
-                  </Button>
+                  {
+                    plan.title === "Free" ? <>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        sx={{
+                          mt: 2,
+                          "&:hover": { backgroundColor: darkTheme.palette.primary.dark },
+                        }}
+                        href="/generate"
+                      >
+                        Get Started
+                      </Button>
+                    </> : <>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        sx={{
+                          mt: 2,
+                          "&:hover": { backgroundColor: darkTheme.palette.primary.dark },
+                        }}
+                        onClick={handleSubmit}
+                      >
+                        Choose {plan.title}
+                      </Button>
+                    </>
+                  }
                 </Paper>
               </Grid>
             ))}
