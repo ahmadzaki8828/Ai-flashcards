@@ -212,6 +212,7 @@ export default function Home() {
                 py: 2,
                 fontSize: "1.2rem",
                 fontWeight: "bold",
+                m: 2,
                 "&:hover": { backgroundColor: darkTheme.palette.primary.dark },
               }}
               href="/generate"
