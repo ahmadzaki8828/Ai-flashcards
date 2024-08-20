@@ -16,8 +16,7 @@ import {
 } from "@mui/material";
 import Head from "next/head";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import BackgroundImage from '@/public/hero.jpg';
-
+import BackgroundImage from "@/public/hero.jpg";
 
 const darkTheme = createTheme({
   palette: {
@@ -99,8 +98,14 @@ export default function Home() {
       <Container maxWidth={false} disableGutters sx={{ padding: 0 }}>
         <Head>
           <title>MindCraft - AI-Powered Flashcards</title>
-          <meta name="description" content="Create flashcards from your text using AI" />
-          <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+          <meta
+            name="description"
+            content="Create flashcards from your text using AI"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+            rel="stylesheet"
+          />
         </Head>
 
         <AppBar
@@ -121,7 +126,10 @@ export default function Home() {
               <Button
                 color="inherit"
                 href="/sign-in"
-                sx={{ mr: 2, "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }}
+                sx={{
+                  mr: 2,
+                  "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
+                }}
               >
                 Login
               </Button>
@@ -129,12 +137,35 @@ export default function Home() {
                 variant="contained"
                 color="primary"
                 href="/sign-up"
-                sx={{ "&:hover": { backgroundColor: darkTheme.palette.primary.dark } }}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: darkTheme.palette.primary.dark,
+                  },
+                }}
               >
                 Sign Up
               </Button>
             </SignedOut>
+
             <SignedIn>
+              <Button
+                variant="contained"
+                color="secondary" // Button color remains consistent with the primary theme color
+                href="/flashcards"
+                sx={{
+                  fontSize: "0.875rem", // Reduced font size
+                  fontWeight: 600,
+                  paddingX: 2, // Reduced padding
+                  paddingY: 1, // Reduced padding
+                  backgroundColor: darkTheme.palette.primary.main,
+                  "&:hover": {
+                    backgroundColor: darkTheme.palette.primary.dark,
+                  },
+                  mr: 2,
+                }}
+              >
+                Your Collections
+              </Button>
               <UserButton />
             </SignedIn>
           </Toolbar>
@@ -162,10 +193,15 @@ export default function Home() {
         >
           <Box sx={{ position: "relative", zIndex: 1 }}>
             <Typography variant="h2" fontWeight="bold" gutterBottom>
-            Begin Your MindCraft Adventure <br /> in Minutes!
+              Begin Your MindCraft Adventure <br /> in Minutes!
             </Typography>
-            <Typography variant="h5" color="text.secondary" gutterBottom sx={{ mb: 4 }}>
-            Effortlessly Create Flashcards with AI Magic!
+            <Typography
+              variant="h5"
+              color="text.secondary"
+              gutterBottom
+              sx={{ mb: 4 }}
+            >
+              Effortlessly Create Flashcards with AI Magic!
             </Typography>
             <Button
               variant="contained"
@@ -181,22 +217,6 @@ export default function Home() {
               href="/generate"
             >
               Get Started
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              sx={{
-                px: 4,
-                py: 2,
-                fontSize: "1rem",
-                fontWeight: "bold",
-                "&:hover": {
-                  backgroundColor: darkTheme.palette.secondary.main,
-                },
-              }}
-              href="/flashcards"
-            >
-              Your Flashcards
             </Button>
           </Box>
         </Box>
@@ -215,17 +235,20 @@ export default function Home() {
             {[
               {
                 title: "AI-Powered Generation",
-                description: "Our advanced AI algorithms create tailored flashcards from your input text.",
+                description:
+                  "Our advanced AI algorithms create tailored flashcards from your input text.",
                 icon: "🤖",
               },
               {
                 title: "Smart Organization",
-                description: "Automatically organize your flashcards into decks and categories for efficient studying.",
+                description:
+                  "Automatically organize your flashcards into decks and categories for efficient studying.",
                 icon: "📚",
               },
               {
                 title: "Cross-Platform Sync",
-                description: "Access your flashcards seamlessly across all your devices.",
+                description:
+                  "Access your flashcards seamlessly across all your devices.",
                 icon: "🔄",
               },
             ].map((feature, index) => (
@@ -245,7 +268,9 @@ export default function Home() {
                     },
                   }}
                 >
-                  <Typography variant="h1" sx={{ mb: 2 }}>{feature.icon}</Typography>
+                  <Typography variant="h1" sx={{ mb: 2 }}>
+                    {feature.icon}
+                  </Typography>
                   <Typography variant="h5" fontWeight="bold" gutterBottom>
                     {feature.title}
                   </Typography>
@@ -273,12 +298,21 @@ export default function Home() {
               {
                 title: "Basic",
                 price: "$5",
-                features: ["100 AI-generated flashcards/month", "Basic organization", "Web access"],
+                features: [
+                  "100 AI-generated flashcards/month",
+                  "Basic organization",
+                  "Web access",
+                ],
               },
               {
                 title: "Pro",
                 price: "$10",
-                features: ["Unlimited AI-generated flashcards", "Advanced organization", "Cross-platform sync", "Priority support"],
+                features: [
+                  "Unlimited AI-generated flashcards",
+                  "Advanced organization",
+                  "Cross-platform sync",
+                  "Priority support",
+                ],
               },
             ].map((plan, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
@@ -299,11 +333,18 @@ export default function Home() {
                       {plan.title}
                     </Typography>
                     <Typography variant="h3" color="primary" gutterBottom>
-                      {plan.price} <Typography component="span" variant="h6">/month</Typography>
+                      {plan.price}{" "}
+                      <Typography component="span" variant="h6">
+                        /month
+                      </Typography>
                     </Typography>
                     <Box sx={{ my: 4 }}>
                       {plan.features.map((feature, idx) => (
-                        <Typography key={idx} color="text.secondary" sx={{ mb: 1 }}>
+                        <Typography
+                          key={idx}
+                          color="text.secondary"
+                          sx={{ mb: 1 }}
+                        >
                           {feature}
                         </Typography>
                       ))}
@@ -315,7 +356,9 @@ export default function Home() {
                     size="large"
                     sx={{
                       mt: 2,
-                      "&:hover": { backgroundColor: darkTheme.palette.primary.dark },
+                      "&:hover": {
+                        backgroundColor: darkTheme.palette.primary.dark,
+                      },
                     }}
                     onClick={handleSubmit}
                   >
@@ -327,16 +370,19 @@ export default function Home() {
           </Grid>
         </Box>
 
-        <Box
-          sx={{
-            py: 4,
-            textAlign: "center",
-            backgroundColor: darkTheme.palette.background.paper,
-          }}
-        >
-          <Typography variant="body2" color="text.secondary">
-            &copy; {new Date().getFullYear()} MindCraft. All rights reserved.
+        <Box sx={{ py: 8, px: 4, textAlign: "center" }}>
+          <Typography variant="h4" fontWeight="bold" gutterBottom>
+            Ready to Start Your Learning Journey?
           </Typography>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="large"
+            sx={{ px: 6, py: 2, fontSize: "1.2rem", fontWeight: "bold" }}
+            href="/generate"
+          >
+            Create Flashcards Now
+          </Button>
         </Box>
       </Container>
     </ThemeProvider>

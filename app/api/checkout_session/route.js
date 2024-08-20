@@ -53,8 +53,10 @@ export async function POST(req) {
       status: 200,
     });
   } catch (error) {
-    console.error('Error creating checkout session:', error);
-    return NextResponse.json({ error: { message: error.message } }, { status: 500 });
-}
-
+    console.error("Error creating checkout session:", error);
+    return NextResponse.json(
+      { error: { message: error.message } },
+      { status: 500 }
+    );
+  }
 }

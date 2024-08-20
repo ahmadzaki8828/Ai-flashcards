@@ -184,7 +184,14 @@ export default function Generate() {
 
   if (!isLoaded || !isSignedIn) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
         <CircularProgress />
       </Box>
     );
@@ -196,7 +203,10 @@ export default function Generate() {
       <Head>
         <title>MindCraft - Generate Flashcards</title>
         <meta name="description" content="Generate flashcards using AI" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+          rel="stylesheet"
+        />
       </Head>
       <AppBar
         position="static"
@@ -214,7 +224,10 @@ export default function Generate() {
           <Button
             color="inherit"
             onClick={handleGoHome}
-            sx={{ mr: 2, "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }}
+            sx={{
+              mr: 2,
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
+            }}
           >
             Home
           </Button>
@@ -239,9 +252,9 @@ export default function Generate() {
               variant="outlined"
               sx={{ mb: 2 }}
             />
-            <Button 
-              variant="contained" 
-              onClick={handleSubmit} 
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
               fullWidth
               disabled={isGenerating}
             >
@@ -252,7 +265,9 @@ export default function Generate() {
 
         {flashcards.length > 0 && (
           <Box sx={{ mt: 4 }}>
-            <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>Flashcards Preview</Typography>
+            <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
+              Flashcards Preview
+            </Typography>
             <Grid container spacing={3}>
               {flashcards.map((flashcard, index) => (
                 <Grid item xs={12} sm={6} md={4} key={index}>
@@ -356,7 +371,9 @@ export default function Generate() {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} disabled={isSaving}>Close</Button>
+            <Button onClick={handleClose} disabled={isSaving}>
+              Close
+            </Button>
             <Button
               onClick={saveFlashCards}
               disabled={!name.trim() || isSaving}

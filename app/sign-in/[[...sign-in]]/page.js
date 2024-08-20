@@ -66,24 +66,46 @@ export default function SignInPage() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Container maxWidth={false} disableGutters sx={{ padding: 0 }}>
-        <AppBar position="static" sx={{ borderRadius: 0, backgroundColor: "transparent", boxShadow: "none" }}>
+        <AppBar
+          position="static"
+          sx={{
+            borderRadius: 0,
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          }}
+        >
           <Toolbar>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               <Link
                 href="/"
                 passHref
-                style={{ textDecoration: "none", color: darkTheme.palette.text.primary }}
+                style={{
+                  textDecoration: "none",
+                  color: darkTheme.palette.text.primary,
+                }}
               >
                 MindCraft
               </Link>
             </Typography>
-            <Button color="inherit" href="/" sx={{ color: darkTheme.palette.text.primary }}>
+            <Button
+              color="inherit"
+              href="/"
+              sx={{ color: darkTheme.palette.text.primary }}
+            >
               Go Home
             </Button>
-            <Button color="inherit" href="/sign-in" sx={{ color: darkTheme.palette.text.primary }}>
+            <Button
+              color="inherit"
+              href="/sign-in"
+              sx={{ color: darkTheme.palette.text.primary }}
+            >
               Login
             </Button>
-            <Button color="inherit" href="/sign-up" sx={{ color: darkTheme.palette.text.primary }}>
+            <Button
+              color="inherit"
+              href="/sign-up"
+              sx={{ color: darkTheme.palette.text.primary }}
+            >
               Sign Up
             </Button>
           </Toolbar>

@@ -18,7 +18,7 @@ import {
   Paper,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import BackgroundImage from '@/public/hero.jpg'; // Import your background image if needed
+import BackgroundImage from "@/public/hero.jpg"; // Import your background image if needed
 
 // Create a dark theme based on the provided configuration
 const darkTheme = createTheme({
